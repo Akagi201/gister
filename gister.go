@@ -17,10 +17,15 @@ import (
 )
 
 var (
-	version = "v0.1.0"
+	version = "0.1.0"
+	time = "2016-08-03-20:30:33"
 )
 
-//#TODO: A list of clipboard commands with copy and paste support.
+const (
+	githubVersion = "v0.3.0"
+)
+
+//TODO: A list of clipboard commands with copy and paste support.
 //This is intended for adding the gist URLs directly to the user clipboard,
 //so that manual copying is not needed.
 const (
@@ -41,7 +46,7 @@ const (
 //User agent defines a custom agent (required by GitHub)
 //`token` stores the GITHUB_TOKEN from the env variables
 var (
-	USER_AGENT = "gist/#" + version //Github requires this, else rejects API request
+	USER_AGENT = "gist/#" + githubVersion //Github requires this, else rejects API request
 	token      = os.Getenv("GITHUB_TOKEN")
 )
 
@@ -92,6 +97,7 @@ func usage() {
 // anonymous gist or not.
 // The response recieved is parsed and the Gist URL is printed to STDOUT.
 func main() {
+	fmt.Println("Build version: ", version, "build time: ", time)
 	flag.BoolVar(&publicFlag, "p", true, "Set to false for private gist.")
 	flag.BoolVar(&anonymous, "a", true, "Set false if you want the gist for a user")
 	flag.StringVar(&description, "d", "This is a gist", "Description for gist.")
