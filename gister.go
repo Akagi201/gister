@@ -18,7 +18,7 @@ import (
 
 var (
 	version = "0.1.0"
-	time = "2016-08-03-20:30:33"
+	time    = "2016-08-03-20:30:33"
 )
 
 const (
@@ -39,15 +39,15 @@ const (
 // GIT_IO_URL is the Github's URL shortner
 // API v3 is the current version of GitHub API
 const (
-	GITHUB_API_URL = "https://api.github.com/"
-	BASE_PATH      = "/api/v3"
+	GithubAPIURL = "https://api.github.com/"
+	BasePath     = "/api/v3"
 )
 
 //User agent defines a custom agent (required by GitHub)
 //`token` stores the GITHUB_TOKEN from the env variables
 var (
-	USER_AGENT = "gist/#" + githubVersion //Github requires this, else rejects API request
-	token      = "ff2c7d92a4def8745abff14b8e969d4f5e4e8150" // os.Getenv("GITHUB_TOKEN")
+	UserAgent = "gist/#" + githubVersion //Github requires this, else rejects API request
+	token     = os.Getenv("GITHUB_TOKEN")
 )
 
 // Variables used in `Gist` struct
@@ -58,12 +58,12 @@ var (
 	responseObj map[string]interface{}
 )
 
-// The top-level struct for a gist file
+// GistFile The top-level struct for a gist file
 type GistFile struct {
 	Content string `json:"content"`
 }
 
-// The required structure for POST data for API purposes
+// Gist The required structure for POST data for API purposes
 type Gist struct {
 	Description string              `json:"description"`
 	PublicFile  bool                `json:"public"`
@@ -75,11 +75,11 @@ type Gist struct {
 func loadTokenFromFile() (token string) {
 	//get the tokenfile
 	file := filepath.Join(os.Getenv("HOME"), ".gist")
-	github_token, err := ioutil.ReadFile(file)
+	githubToken, err := ioutil.ReadFile(file)
 	if err != nil {
 		log.Fatal(err)
 	}
-	return strings.TrimSpace(string(github_token))
+	return strings.TrimSpace(string(githubToken))
 }
 
 // Defines basic usage when program is run with the help flag
@@ -99,19 +99,19 @@ func usage() {
 func main() {
 	fmt.Println("Build version: ", version, "build time: ", time)
 	flag.BoolVar(&publicFlag, "p", true, "Set to false for private gist.")
-	flag.BoolVar(&anonymous, "a", false, "Set false if you want the gist for a user")
+	flag.BoolVar(&anonymous, "a", true, "Set false if you want the gist for a user")
 	flag.StringVar(&description, "d", "This is a gist", "Description for gist.")
 	flag.Usage = usage
 	flag.Parse()
 
-	files_list := flag.Args()
-	if len(files_list) == 0 {
+	fileList := flag.Args()
+	if len(fileList) == 0 {
 		log.Fatal("Error: No files specified.")
 	}
 
 	files := map[string]GistFile{}
 
-	for _, filename := range files_list {
+	for _, filename := range fileList {
 		fmt.Println("Checking file:", filename)
 		content, err := ioutil.ReadFile(filename)
 		if err != nil {
@@ -121,7 +121,7 @@ func main() {
 	}
 
 	if description == "" {
-		description = strings.Join(files_list, ", ")
+		description = strings.Join(fileList, ", ")
 	}
 
 	//create a gist from the files array
