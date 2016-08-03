@@ -23,4 +23,7 @@ _testmain.go
 *.test
 *.prof
 
-/gister*
+/gister
+/gister_win
+/gister_mac
+/gister_linux
