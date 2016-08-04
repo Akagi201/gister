@@ -84,7 +84,7 @@ func loadTokenFromFile() (token string) {
 
 // Defines basic usage when program is run with the help flag
 func usage() {
-	fmt.Fprintf(os.Stderr, "usage: gist [-p] [-d] [-a] example\n")
+	fmt.Fprintf(os.Stderr, "usage: gister [-p] [-d] [-a] example\n")
 	flag.PrintDefaults()
 	os.Exit(2)
 }
