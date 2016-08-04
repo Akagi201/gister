@@ -98,7 +98,7 @@ func usage() {
 // The response recieved is parsed and the Gist URL is printed to STDOUT.
 func main() {
 	fmt.Println("Build version: ", version, "build time: ", time)
-	flag.BoolVar(&publicFlag, "p", true, "Set to false for private gist.")
+	flag.BoolVar(&publicFlag, "p", false, "Set to false for private gist.")
 	flag.BoolVar(&anonymous, "a", false, "Set false if you want the gist for a user")
 	flag.StringVar(&description, "d", "This is a gist", "Description for gist.")
 	flag.Usage = usage
